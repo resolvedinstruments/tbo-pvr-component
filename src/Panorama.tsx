@@ -5,7 +5,7 @@ import { container } from "./styles.css"
 import { useRef } from "preact/hooks"
 
 export const Panorama = () => {
-  const panoramaImage = "0001/0001_pvr_01/0001_pvr_01_stitched.jpg"
+  const panoramaImage = "example_stitched.jpg"
   const previewImage = panoramaImage.replace("stitched.jpg", "thumbnail.png")
   const imgRef = useRef(null)
 
