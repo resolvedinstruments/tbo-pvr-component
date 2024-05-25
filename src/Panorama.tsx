@@ -34,6 +34,7 @@ export const Panorama = () => {
       minPitch: -vaov / 2,
       maxPitch: vaov / 2,
       showFullscreenCtrl: false,
+      showControls: false,
       showZoomCtrl: false,
       autoLoad: true,
       minHfov: 30,
