@@ -4,10 +4,18 @@ import { container } from "./styles.css"
 
 import { useRef } from "preact/hooks"
 
-export const Panorama = () => {
-  const panoramaImage = "example_stitched.jpg"
-  const previewImage = panoramaImage.replace("stitched.jpg", "thumbnail.png")
+export const Panorama = ({
+  stichedImage = "stiched.jpg",
+  previewImage,
+}: {
+  stichedImage?: string
+  previewImage?: string
+}) => {
   const divRef = useRef<HTMLDivElement>(null)
+
+  if (!previewImage) {
+    previewImage = stichedImage.replace("stitched.jpg", "thumbnail.png")
+  }
 
   useEffect(() => {
     // calculate vaov from ponomara image dimensions
@@ -28,7 +36,7 @@ export const Panorama = () => {
 
     pannellum.viewer("panorama", {
       type: "equirectangular",
-      panorama: panoramaImage,
+      panorama: stichedImage,
       preview: previewImage,
       vaov,
       minPitch: -vaov / 2,

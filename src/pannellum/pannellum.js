@@ -1,4 +1,4 @@
-/*
+/*!
  * Pannellum - An HTML5 based Panorama Viewer
  * Copyright (c) 2011-2024 Matthew Petroff
  *
