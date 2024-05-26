@@ -17,7 +17,4 @@ export default defineConfig({
       fileName: (format) => `tbo-pvr-component.${format}.js`,
     },
   },
-  esbuild: {
-    legalComments: "eof",
-  },
 })
