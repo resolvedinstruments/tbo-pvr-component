@@ -1,7 +1,10 @@
-
-Place `0001` example directory with assets in `public` folder
-
 ```
+# install npm dependancies
 npm install
+
+# to start dev server
 npm run dev
+
+# to build output files in dist/
+npm run build
 ```
