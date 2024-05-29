@@ -7,9 +7,11 @@ import { useRef } from "preact/hooks"
 export const Panorama = ({
   stichedImage = "stiched.jpg",
   previewImage,
+  aspectRatio = "5/2",
 }: {
   stichedImage?: string
   previewImage?: string
+  aspectRatio?: string
 }) => {
   const divRef = useRef<HTMLDivElement>(null)
 
@@ -23,10 +25,16 @@ export const Panorama = ({
     const height = 2160
     const vaov = (height / width) * 360 * 1
 
-    let aspectRatio = 2.5
+    let aspectRatio
     if (divRef.current) {
+      // divRef should always be defined if called in useEffect handler.
       const { clientWidth, clientHeight } = divRef.current
       aspectRatio = clientWidth / clientHeight
+      console.log("aspectRatio", aspectRatio)
+    } else {
+      // should never happen
+      console.error("divRef.current is null")
+      aspectRatio = 5 / 2
     }
 
     const hfov =
@@ -47,9 +55,17 @@ export const Panorama = ({
       autoLoad: true,
       minHfov: 30,
       maxHfov: hfov * 1.0,
+      hfov: hfov,
     })
   })
 
-  return <div id="panorama" className={container} ref={divRef}></div>
+  return (
+    <div
+      id="panorama"
+      className={container}
+      ref={divRef}
+      style={{ aspectRatio }}
+    ></div>
+  )
 }
 export default Panorama
