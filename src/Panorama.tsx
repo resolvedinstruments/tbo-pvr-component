@@ -6,24 +6,54 @@ import { useRef } from "preact/hooks"
 
 export const Panorama = ({
   stichedImage = "stiched.jpg",
+  stichedImageSmall,
   previewImage,
   aspectRatio = "5/2",
 }: {
   stichedImage?: string
+  stichedImageSmall?: string
   previewImage?: string
   aspectRatio?: string
 }) => {
   const divRef = useRef<HTMLDivElement>(null)
+  const canvasRef = useRef<HTMLCanvasElement>(null)
 
   if (!previewImage) {
     previewImage = stichedImage.replace("stitched.jpg", "thumbnail.png")
   }
 
+  const getMaxTextureSize = () => {
+    const canvas = canvasRef.current
+    if (!canvas) {
+      console.error("Canvas not found")
+      return 8192
+    }
+    const gl = canvas.getContext("webgl2")
+    if (!gl) {
+      console.error("WebGL not supported")
+      return 8192
+    }
+    const maxTextureSize = gl.getParameter(gl.MAX_TEXTURE_SIZE)
+    return maxTextureSize
+  }
+
+  const isIphone = () => {
+    return /iPhone|iPod/.test(navigator.userAgent) && !(window as any).MSStream
+  }
+
+  const useSmallTexture = () => getMaxTextureSize() * 2 < 20891 || isIphone()
+
   useEffect(() => {
     // calculate vaov from ponomara image dimensions
-    const width = 20891
-    const height = 2160
-    const vaov = (height / width) * 360 * 1
+    const vaov = (2160 / 20891) * 360 * 1
+
+    const maxTextureSize = getMaxTextureSize()
+
+    // pannellum can automatically split textures into 2x if needed.  However iPhones seem to report a larger max texture size than they can actually handle.
+    const stichedImageToUse =
+      getMaxTextureSize() * 2 < 20891 || isIphone()
+        ? stichedImageSmall
+        : stichedImage
 
     let aspectRatio
     if (divRef.current) {
@@ -44,7 +74,7 @@ export const Panorama = ({
 
     pannellum.viewer("panorama", {
       type: "equirectangular",
-      panorama: stichedImage,
+      panorama: stichedImageToUse || stichedImage,
       preview: previewImage,
       vaov,
       minPitch: -vaov / 2,
@@ -60,12 +90,15 @@ export const Panorama = ({
   })
 
   return (
-    <div
-      id="panorama"
-      className={container}
-      ref={divRef}
-      style={{ aspectRatio }}
-    ></div>
+    <>
+      <div
+        id="panorama"
+        className={container}
+        ref={divRef}
+        style={{ aspectRatio }}
+      ></div>
+      <canvas ref={canvasRef} style={{ display: "none" }}></canvas>
+    </>
   )
 }
 export default Panorama

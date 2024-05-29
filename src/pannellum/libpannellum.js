@@ -662,16 +662,19 @@ export const libpannellum = (function (window, document, undefined) {
           }
         }
 
+        // CHANGED FOLLOWING - CALLUM
         // Set parameters for rendering any size
-        if (
-          imageType != "cubemap" &&
-          image.width &&
-          image.width <= maxWidth &&
-          haov == 2 * Math.PI &&
-          (image.width & (image.width - 1)) == 0
-        )
-          gl.texParameteri(glBindType, gl.TEXTURE_WRAP_S, gl.REPEAT) // Only supported for power-of-two images in WebGL 1
-        else gl.texParameteri(glBindType, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE)
+        // if (
+        //   imageType != "cubemap" &&
+        //   image.width &&
+        //   image.width <= maxWidth &&
+        //   haov == 2 * Math.PI &&
+        //   (image.width & (image.width - 1)) == 0
+        // )
+        //   gl.texParameteri(glBindType, gl.TEXTURE_WRAP_S, gl.REPEAT) // Only supported for power-of-two images in WebGL 1
+        // else gl.texParameteri(glBindType, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE)
+        gl.texParameteri(glBindType, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE)
+        // END CHANGES
         gl.texParameteri(glBindType, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE)
         gl.texParameteri(glBindType, gl.TEXTURE_MIN_FILTER, gl.LINEAR)
         gl.texParameteri(glBindType, gl.TEXTURE_MAG_FILTER, gl.LINEAR)

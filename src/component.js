@@ -28,6 +28,7 @@ import Panorama from "./Panorama"
 
 register(Panorama, "x-tbo-pvr-component", [
   "stiched-image",
+  "stiched-image-small",
   "preview-image",
   "aspect-ratio",
 ])
